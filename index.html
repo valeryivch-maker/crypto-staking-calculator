@@ -3,85 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crypto Staking Calculator — APY & Compound Interest Rewards</title>
-<meta name="description" content="Free Crypto Staking & APY Calculator. Calculate daily, monthly, and yearly staking rewards with compound interest for Ethereum, Solana, Cardano, and USDT.">
+<title>Crypto Staking Calculator — APY &amp; Compound Interest Rewards</title>
+<meta name="description" content="Free Crypto Staking & APY Calculator. Calculate passive rewards for Ethereum (ETH), Solana (SOL), Polkadot (DOT), and USDT with daily, monthly, or yearly compounding.">
 <style>
   :root {
-    --bg: #0f172a; --card: #1e293b; --input: #0f172a; --border: #334155;
-    --text: #f8fafc; --muted: #94a3b8; --accent: #38bdf8; --green: #22c55e;
+    --bg: #0b1120;
+    --surface: #1e293b;
+    --surface-2: #0f172a;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+    --border: #334155;
+    --primary: #6366f1;
+    --green: #10b981;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-  body { background: var(--bg); color: var(--text); line-height: 1.6; padding: 20px; }
-  .container { max-width: 820px; margin: 0 auto; }
-  header { text-align: center; padding: 24px 0 30px; }
-  h1 { font-size: 1.9rem; font-weight: 800; margin-bottom: 8px; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  body { background: var(--bg); color: var(--text); line-height: 1.6; padding: 24px 16px; }
+  .container { max-width: 780px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 28px; }
+  h1 { font-size: 1.9rem; font-weight: 800; margin-bottom: 8px; color: #fff; }
   .subtitle { color: var(--muted); font-size: 1rem; }
-  
-  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-  @media (max-width: 700px) { .calc-grid { grid-template-columns: 1fr; } }
-  
-  .field { margin-bottom: 16px; }
-  .field label { display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
-  .field input, .field select { width: 100%; padding: 11px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--input); color: var(--text); font-size: 1rem; font-weight: 600; outline: none; }
-  .field input:focus, .field select:focus { border-color: var(--accent); }
-  
-  .presets { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-  .preset-btn { padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--input); color: var(--muted); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
-  .preset-btn:hover { border-color: var(--accent); color: var(--text); }
-
-  .results-box { background: var(--input); border: 1px solid var(--border); border-radius: 14px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
-  .main-res { border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 16px; }
-  .res-label { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-  .res-big { font-size: 2.1rem; font-weight: 800; color: var(--green); margin: 4px 0; }
-  .res-sub { font-size: 0.9rem; color: var(--accent); font-weight: 600; }
-  
-  .breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .stat-item { background: var(--card); padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); }
-  .stat-item span { display: block; font-size: 0.78rem; color: var(--muted); }
-  .stat-item strong { font-size: 1.05rem; color: var(--text); }
-
-  .seo-block { margin-top: 32px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
-  .seo-block h2 { font-size: 1.25rem; margin-bottom: 10px; color: var(--accent); }
-  .seo-block p { color: var(--muted); font-size: 0.94rem; margin-bottom: 14px; }
-  footer { text-align: center; color: var(--muted); font-size: 0.82rem; margin-top: 30px; padding-bottom: 20px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
+  .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .preset-btn { background: var(--surface-2); border: 1px solid var(--border); color: var(--text); padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.15s; }
+  .preset-btn:hover, .preset-btn.active { border-color: var(--primary); background: rgba(99, 102, 241, 0.18); color: #fff; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .field label { display: block; font-size: 0.86rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+  .field input, .field select { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--surface-2); color: #fff; font-size: 1rem; font-weight: 600; outline: none; }
+  .field input:focus, .field select:focus { border-color: var(--primary); }
+  .results-box { background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; padding: 20px; text-align: center; }
+  .res-label { font-size: 0.88rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+  .res-total { font-size: 2.3rem; font-weight: 800; color: #fff; margin: 6px 0; }
+  .res-profit { font-size: 1.05rem; font-weight: 700; color: var(--green); margin-bottom: 18px; }
+  .res-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; border-top: 1px solid var(--border); padding-top: 16px; }
+  .mini-stat { background: var(--surface); padding: 12px; border-radius: 10px; border: 1px solid var(--border); }
+  .mini-stat span { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 4px; }
+  .mini-stat strong { font-size: 1.05rem; color: #fff; }
+  .seo-section h2 { font-size: 1.25rem; margin: 20px 0 8px; color: #fff; }
+  .seo-section p { color: var(--muted); font-size: 0.95rem; margin-bottom: 14px; }
+  .cross-links { margin-top: 24px; padding: 18px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); text-align: center; font-size: 0.9rem; }
+  .cross-links a { color: #818cf8; text-decoration: none; font-weight: 600; margin: 0 6px; }
+  .cross-links a:hover { text-decoration: underline; }
+  footer { text-align: center; margin-top: 24px; font-size: 0.8rem; color: var(--muted); }
 </style>
 </head>
 <body>
 <div class="container">
   <header>
-    <h1>Crypto Staking & APY Calculator</h1>
+    <h1>Crypto Staking &amp; APY Calculator</h1>
     <p class="subtitle">Calculate your passive crypto rewards with daily, monthly, or yearly compounding</p>
   </header>
 
-  <div class="calc-grid">
-    <div>
-      <div class="presets">
-        <button class="preset-btn" onclick="setPreset(4.2, 'ETH')">ETH (~4.2%)</button>
-        <button class="preset-btn" onclick="setPreset(7.1, 'SOL')">SOL (~7.1%)</button>
-        <button class="preset-btn" onclick="setPreset(11.5, 'DOT')">DOT (~11.5%)</button>
-        <button class="preset-btn" onclick="setPreset(8.5, 'USDT')">USDT (~8.5%)</button>
-      </div>
+  <div class="card">
+    <div class="presets">
+      <button type="button" class="preset-btn" onclick="setPreset(4.2, this)">ETH (~4.2%)</button>
+      <button type="button" class="preset-btn active" onclick="setPreset(7.1, this)">SOL (~7.1%)</button>
+      <button type="button" class="preset-btn" onclick="setPreset(11.5, this)">DOT (~11.5%)</button>
+      <button type="button" class="preset-btn" onclick="setPreset(8.5, this)">USDT (~8.5%)</button>
+    </div>
 
+    <div class="grid-2">
       <div class="field">
-        <label>Initial Investment ($ USD)</label>
-        <input type="number" id="amount" value="2500" min="0" step="100" oninput="calc()">
+        <label for="amount">Initial Investment ($ USD)</label>
+        <input type="number" id="amount" value="2500" min="0" step="any" oninput="calculate()">
       </div>
-
       <div class="field">
-        <label>Annual Yield / APY (%)</label>
-        <input type="number" id="apy" value="7.1" min="0" max="1000" step="0.1" oninput="calc()">
+        <label for="apy">Annual Yield / APY (%)</label>
+        <input type="number" id="apy" value="7.1" min="0" step="0.1" oninput="calculate()">
       </div>
-
       <div class="field">
-        <label>Staking Duration (Months)</label>
-        <input type="number" id="months" value="12" min="1" max="120" oninput="calc()">
+        <label for="months">Staking Duration (Months)</label>
+        <input type="number" id="months" value="12" min="1" max="600" oninput="calculate()">
       </div>
-
       <div class="field">
-        <label>Compounding Frequency</label>
-        <select id="compound" onchange="calc()">
-          <option value="365">Daily Compounding</option>
-          <option value="12" selected>Monthly Compounding</option>
+        <label for="comp">Compounding Frequency</label>
+        <select id="comp" onchange="calculate()">
+          <option value="365" selected>Daily Compounding</option>
+          <option value="12">Monthly Compounding</option>
           <option value="1">Yearly Compounding</option>
           <option value="0">No Compounding (Simple Interest)</option>
         </select>
@@ -89,132 +86,96 @@
     </div>
 
     <div class="results-box">
-      <div class="main-res">
-        <div class="res-label">Estimated Total Balance</div>
-        <div class="res-big" id="total-balance">$2,683.48</div>
-        <div class="res-sub" id="total-profit">+$183.48 Total Staking Profit (+7.34%)</div>
-      </div>
-
-      <div class="breakdown">
-        <div class="stat-item">
-          <span>Daily Reward (Avg)</span>
-          <strong id="daily-rew">$0.50</strong>
-        </div>
-        <div class="stat-item">
-          <span>Monthly Reward (Avg)</span>
-          <strong id="monthly-rew">$15.29</strong>
-        </div>
-        <div class="stat-item">
-          <span>Yearly Reward</span>
-          <strong id="yearly-rew">$183.48</strong>
-        </div>
-        <div class="stat-item">
-          <span>Effective APY</span>
-          <strong id="eff-apy">7.34%</strong>
-        </div>
+      <div class="res-label">Estimated Total Balance</div>
+      <div class="res-total" id="res-total">$2,683.48</div>
+      <div class="res-profit" id="res-profit">+$183.48 Total Staking Profit (+7.34%)</div>
+      <div class="res-grid">
+        <div class="mini-stat"><span>Daily Reward (Avg)</span><strong id="res-daily">$0.50</strong></div>
+        <div class="mini-stat"><span>Monthly Reward (Avg)</span><strong id="res-monthly">$15.29</strong></div>
+        <div class="mini-stat"><span>Yearly Reward</span><strong id="res-yearly">$183.48</strong></div>
+        <div class="mini-stat"><span>Effective APY</span><strong id="res-eff">7.34%</strong></div>
       </div>
     </div>
   </div>
+  <!-- CPA Affiliate Block: Kraken -->
+  <div style="margin: 24px 0; padding: 22px; border-radius: 16px; background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 1px solid #4f46e5; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <div style="flex: 1; min-width: 240px;">
+        <span style="display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #a5b4fc; background: rgba(79, 70, 229, 0.25); padding: 4px 9px; border-radius: 6px; margin-bottom: 8px;">Top Rated Staking Platform (US, CA, UK &amp; EU)</span>
+        <h3 style="margin: 0 0 6px 0; font-size: 18px; color: #f8fafc;">Start Earning Up to 17% APY on Kraken</h3>
+        <p style="margin: 0; font-size: 14px; color: #cbd5e1; line-height: 1.5;">Stake ETH, SOL, DOT, and stablecoins securely with instant rewards and bank-grade protection. Sign up today and unlock up to <strong>$200 in welcome bonuses</strong>.</p>
+      </div>
+      <div>
+        <a href="https://kraken.com" target="_blank" rel="nofollow sponsored noopener" style="display: inline-block; padding: 13px 22px; background: #6366f1; color: #ffffff; font-weight: 700; font-size: 14px; text-decoration: none; border-radius: 10px; white-space: nowrap;">Claim Bonus on Kraken &rarr;</a>
+      </div>
+    </div>
+    <p style="margin: 12px 0 0 0; font-size: 11px; color: #64748b;">Affiliate disclosure: We may earn a commission at no extra cost to you when you sign up through our link. Crypto investments carry risk; not financial advice.</p>
+  </div>
 
-  <section class="seo-block">
+  <div class="card seo-section">
     <h2>How Crypto Staking Rewards Work</h2>
     <p>Crypto staking allows holders of Proof-of-Stake (PoS) cryptocurrencies like Ethereum (ETH), Solana (SOL), and Polkadot (DOT) to earn passive income by helping secure the blockchain network. Instead of sitting idle in a wallet, your tokens generate yield paid out in additional coins.</p>
     <h2>Why Compounding Frequency Matters</h2>
     <p>When you reinvest your staking rewards back into the pool (compounding), you begin earning interest on your interest. Daily or monthly compounding significantly boosts your effective Annual Percentage Yield (APY) over long time horizons compared to simple interest.</p>
-  </section>
+  </div>
 
-  <!-- NATIVE CPA BLOCK: CRYPTO STAKING -->
-<div style="margin:24px 0; padding:20px; border-radius:12px; background:rgba(30,41,59,0.75); border:1px solid rgba(148,163,184,0.25); color:#f8fafc; font-family:inherit;">
-  <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:#38bdf8; margin-bottom:8px;">
-    Where to Stake &amp; Secure Your Crypto
+  <div class="cross-links">
+    <strong style="display:block; margin-bottom:8px; color:#f8fafc;">More Free Financial &amp; Tech Calculators:</strong>
+    <a href="https://github.io">Freelance Fee Calculator</a> |
+    <a href="https://github.io">AI Token &amp; LLM API Cost Calculator</a> |
+    <a href="https://github.io">Ad ROI &amp; ROAS Calculator</a> |
+    <a href="https://github.io">Compound Interest &amp; 401(k) Investment Calculator</a>
   </div>
-  <div style="font-size:17px; font-weight:700; margin-bottom:6px; color:#ffffff;">
-    Start earning staking rewards or move funds to cold storage
-  </div>
-  <p style="font-size:14px; line-height:1.5; color:#cbd5e1; margin:0 0 14px 0;">
-    Compare regulated staking platforms by region or protect your long-term holdings offline with a hardware wallet.
-  </p>
-  <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-    <a href="#KRAKEN_LINK" target="_blank" rel="nofollow sponsored noopener" style="display:inline-block; background:#7c3aed; color:#ffffff; text-decoration:none; font-weight:600; font-size:13px; padding:10px 16px; border-radius:8px;">
-      Stake on Kraken (US / UK / EU) →
-    </a>
-    <a href="#BYBIT_LINK" target="_blank" rel="nofollow sponsored noopener" style="display:inline-block; background:#f59e0b; color:#0f172a; text-decoration:none; font-weight:700; font-size:13px; padding:10px 16px; border-radius:8px;">
-      Stake on Bybit (Global &amp; EU) →
-    </a>
-    <a href="#LEDGER_LINK" target="_blank" rel="nofollow sponsored noopener" style="display:inline-block; background:#334155; color:#f8fafc; border:1px solid #475569; text-decoration:none; font-weight:600; font-size:13px; padding:10px 16px; border-radius:8px;">
-      Secure with Ledger Wallet →
-    </a>
-  </div>
-  <div style="font-size:11px; color:#94a3b8;">
-    Affiliate disclosure: We may earn a commission at no extra cost to you. Crypto investments carry risk; not financial advice.
-  </div>
-</div>
-<!-- CPA Affiliate Block: Kraken -->
-<div style="margin: 24px 0; padding: 20px; border-radius: 12px; background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 1px solid #4f46e5; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);">
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
-    <div style="flex: 1; min-width: 240px;">
-      <span style="display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #a5b4fc; background: rgba(79, 70, 229, 0.25); padding: 3px 8px; border-radius: 6px; margin-bottom: 8px;">Top Rated Staking Platform (US, CA, UK &amp; EU)</span>
-      <h3 style="margin: 0 0 6px 0; font-size: 18px; color: #f8fafc;">Start Earning Up to 17% APY on Kraken</h3>
-      <p style="margin: 0; font-size: 14px; color: #cbd5e1; line-height: 1.5;">Stake ETH, SOL, DOT, and stablecoins securely with instant rewards and bank-grade protection. Sign up today and unlock up to <strong>$200 in welcome bonuses</strong>.</p>
-    </div>
-    <div>
-      <a href="https://kraken.com" target="_blank" rel="nofollow sponsored noopener" style="display: inline-block; padding: 12px 22px; background: #6366f1; color: #ffffff; font-weight: 700; font-size: 14px; text-decoration: none; border-radius: 8px; white-space: nowrap;">Claim Bonus on Kraken &rarr;</a>
-    </div>
-  </div>
-  <p style="margin: 12px 0 0 0; font-size: 11px; color: #64748b;">Affiliate disclosure: We may earn a commission at no extra cost to you when you sign up through our link.</p>
-</div>
 
   <footer>
- <nav style="margin-top:28px;padding:18px;border-radius:14px;border:1px solid #334155;background:#1e293b;text-align:center;font-family:sans-serif;font-size:14px;color:#f8fafc;">
-  <strong style="display:block;margin-bottom:8px;">More Free Financial & Tech Calculators:</strong>
-  <a href="https://valeryivch-maker.github.io/freelance-fee-calculator/" target="_blank" style="color:#38bdf8;text-decoration:none;font-weight:600;margin:0 8px;">Freelance Fee Calculator</a> |
-  <a href="https://valeryivch-maker.github.io/ai-token-cost-calculator/" target="_blank" style="color:#38bdf8;text-decoration:none;font-weight:600;margin:0 8px;">AI Token & LLM API Cost Calculator</a> |
-  <a href="https://valeryivch-maker.github.io/roas-roi-calculator/" target="_blank" style="color:#38bdf8;text-decoration:none;font-weight:600;margin:0 8px;">Ad ROI & ROAS Calculator</a> |
-  <a href="https://valeryivch-maker.github.io/compound-interest-calculator/" target="_blank" style="color:#38bdf8;text-decoration:none;font-weight:600;margin:0 8px;">Compound Interest & 401(k) Investment Calculator</a>
-</nav>
-    <p>Disclaimer: Calculations are estimates for educational purposes only. Actual crypto staking yields vary by network and validator fees.</p>
+    Disclaimer: Calculations are estimates for educational purposes only. Actual crypto staking yields vary by network and validator fees.
   </footer>
 </div>
+
 <script>
-function setPreset(rate) {
+function setPreset(rate, btn) {
   document.getElementById('apy').value = rate;
-  calc();
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  calculate();
 }
 
 function fmt(num) {
   return '$' + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-function calc() {
+function calculate() {
   const P = parseFloat(document.getElementById('amount').value) || 0;
   const r = (parseFloat(document.getElementById('apy').value) || 0) / 100;
-  const months = parseFloat(document.getElementById('months').value) || 1;
-  const n = parseInt(document.getElementById('compound').value, 10);
+  const months = parseFloat(document.getElementById('months').value) || 0;
+  const n = parseInt(document.getElementById('comp').value, 10);
   const t = months / 12;
 
   let total = P;
   let effRate = r;
 
-  if (n === 0) {
-    total = P * (1 + r * t);
-  } else {
+  if (n > 0 && r > 0) {
     total = P * Math.pow(1 + r / n, n * t);
     effRate = Math.pow(1 + r / n, n) - 1;
+  } else {
+    total = P * (1 + r * t);
   }
 
   const profit = total - P;
-  const roi = P > 0 ? (profit / P) * 100 : 0;
-  const days = months * 30.4375;
+  const pctGain = P > 0 ? (profit / P) * 100 : 0;
+  const yearly = P * effRate;
+  const monthly = yearly / 12;
+  const daily = yearly / 365;
 
-  document.getElementById('total-balance').innerText = fmt(total);
-  document.getElementById('total-profit').innerText = `+${fmt(profit)} Total Staking Profit (+${roi.toFixed(2)}%)`;
-  document.getElementById('daily-rew').innerText = fmt(days > 0 ? profit / days : 0);
-  document.getElementById('monthly-rew').innerText = fmt(months > 0 ? profit / months : 0);
-  document.getElementById('yearly-rew').innerText = fmt(t > 0 ? profit / t : 0);
-  document.getElementById('eff-apy').innerText = (effRate * 100).toFixed(2) + '%';
+  document.getElementById('res-total').innerText = fmt(total);
+  document.getElementById('res-profit').innerText = '+' + fmt(profit) + ' Total Staking Profit (+' + pctGain.toFixed(2) + '%)';
+  document.getElementById('res-daily').innerText = fmt(daily);
+  document.getElementById('res-monthly').innerText = fmt(monthly);
+  document.getElementById('res-yearly').innerText = fmt(yearly);
+  document.getElementById('res-eff').innerText = (effRate * 100).toFixed(2) + '%';
 }
 
-calc();
+calculate();
 </script>
 </body>
 </html>
