@@ -100,8 +100,12 @@
         <div class="mini-stat"><span>Yearly Reward</span><strong id="res-yearly">$183.48</strong></div>
         <div class="mini-stat"><span>Effective APY</span><strong id="res-eff">7.34%</strong></div>
       </div>
+      <div style="margin-top:16px; display:flex; justify-content:center;">
+        <button type="button" id="share-est-btn" onclick="copyShareLink()" style="background:rgba(99,102,241,0.16); color:#a5b4fc; border:1px solid rgba(99,102,241,0.45); font-weight:700; font-size:0.84rem; padding:9px 16px; border-radius:9px; cursor:pointer;">&#128279; Copy Estimate Link</button>
+      </div>
     </div>
   </div>
+
      <!-- CPA Affiliate Block: Kraken + Bybit + Ledger -->
   <div style="margin: 24px 0; padding: 22px; border-radius: 16px; background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); border: 1px solid #4f46e5; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);">
     <span style="display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #a5b4fc; background: rgba(79, 70, 229, 0.25); padding: 4px 9px; border-radius: 6px; margin-bottom: 10px;">Top Rated Crypto Staking Platforms</span>
@@ -187,19 +191,34 @@ function calculate() {
   document.getElementById('res-eff').innerText = (effRate * 100).toFixed(2) + '%';
 }
 
+function copyShareLink() {
+  const amount = document.getElementById('amount').value || 2500;
+  const apy = document.getElementById('apy').value || 7.1;
+  const months = document.getElementById('months').value || 12;
+  const comp = document.getElementById('comp').value || 365;
+  const url = window.location.origin + window.location.pathname + '?amount=' + encodeURIComponent(amount) + '&apy=' + encodeURIComponent(apy) + '&months=' + encodeURIComponent(months) + '&comp=' + encodeURIComponent(comp);
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('share-est-btn');
+    if (btn) { btn.innerHTML = '&#10003; Link Copied!'; setTimeout(() => { btn.innerHTML = '&#128279; Copy Estimate Link'; }, 1800); }
+  });
+}
+
 (function initFromUrl() {
   const params = new URLSearchParams(window.location.search);
   const pAmount = params.get('amount');
   const pApy = params.get('apy');
   const pMonths = params.get('months');
+  const pComp = params.get('comp');
   if (pAmount && !isNaN(parseFloat(pAmount))) document.getElementById('amount').value = parseFloat(pAmount);
   if (pApy && !isNaN(parseFloat(pApy))) {
     document.getElementById('apy').value = parseFloat(pApy);
     document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
   }
   if (pMonths && !isNaN(parseInt(pMonths))) document.getElementById('months').value = parseInt(pMonths);
+  if (pComp && ['365','12','1','0'].includes(pComp)) document.getElementById('comp').value = pComp;
   calculate();
 })();
+
 </script>
 
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c1d700a5fdf540fa94f43b52a8651a2f"}'></script><!-- End Cloudflare Web Analytics -->
