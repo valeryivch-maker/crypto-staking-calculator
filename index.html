@@ -45,7 +45,13 @@
   .cross-links a { color: #818cf8; text-decoration: none; font-weight: 600; margin: 0 6px; }
   .cross-links a:hover { text-decoration: underline; }
   footer { text-align: center; margin-top: 24px; font-size: 0.8rem; color: var(--muted); }
+  .legal-links { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
+  .legal-links a { color: #818cf8; text-decoration: none; font-size: 0.76rem; font-weight: 600; cursor: pointer; }
+  .legal-links a:hover { text-decoration: underline; }
+  .legal-details { max-width: 680px; margin: 12px auto 0; text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 0.76rem; line-height: 1.5; color: var(--muted); display: none; }
+  .legal-details.open { display: block; }
 </style>
+
 </head>
 <body>
 <div class="container">
@@ -144,8 +150,20 @@
   </div>
 
   <footer>
-    Disclaimer: Calculations are estimates for educational purposes only. Actual crypto staking yields vary by network and validator fees.
+    <p>&copy; 2026 Smart Finance &amp; Tech Calculators &bull; Crypto Staking &amp; APY Utility</p>
+    <p style="margin-top:6px; font-size:0.75rem;"><strong>FTC Affiliate Disclosure:</strong> Some links on this page (including Kraken, Bybit, and Ledger) are partner referrals. We may earn a commission at no extra cost to you.</p>
+    <div class="legal-links">
+      <a onclick="toggleLegal('privacy')">Privacy Policy</a>
+      <a onclick="toggleLegal('disclaimer')">Crypto Risk &amp; Financial Disclaimer</a>
+    </div>
+    <div id="legal-privacy" class="legal-details">
+      <strong>Privacy Policy (Updated Nov 2026):</strong> All staking and APY calculations run 100% locally in your web browser. We do not collect, store, or transmit your wallet balances, investment amounts, or personal data. We use privacy-first, cookieless Cloudflare Web Analytics solely to measure aggregate traffic without cross-site tracking.
+    </div>
+    <div id="legal-disclaimer" class="legal-details">
+      <strong>Crypto Risk &amp; Financial Disclaimer:</strong> Staking APY rates and reward projections are estimates for informational and educational purposes only and do not constitute investment, tax, or financial advice. Cryptocurrency staking involves market volatility, lock-up periods, validator slashing, and smart-contract risks; always verify current terms directly on the platform.
+    </div>
   </footer>
+
 </div>
 
 <script>
@@ -219,7 +237,16 @@ function copyShareLink() {
   calculate();
 })();
 
+function toggleLegal(type) {
+  ['privacy', 'disclaimer'].forEach(k => {
+    const el = document.getElementById('legal-' + k);
+    if (!el) return;
+    if (k === type) el.classList.toggle('open');
+    else el.classList.remove('open');
+  });
+}
 </script>
+
 
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c1d700a5fdf540fa94f43b52a8651a2f"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
